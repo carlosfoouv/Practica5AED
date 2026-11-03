@@ -303,7 +303,7 @@ library(dplyr)
 #Usamos dirty_iris para no perder información
 #Podemos usarlas porque las funciones son robustas a NAs
 
-outliers_petal_length <- dirty_iris %>%
+dirty_iris_outliers <- dirty_iris %>%
   mutate(across(
     Petal.Length, 
     list(
@@ -325,7 +325,33 @@ En los métodos de detección de outliers analizados, examina los resultados com
   * Los valores etiquetados como outliers (ordenados de menor a mayor).
 
 ```{r Solucion ejercicio 7, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
+cat("Regla 3 Sigma")
+print(paste("Número de outliers:", sum(dirty_iris_outliers$Petal.Length_Sigma, na.rm = TRUE)))
+print("Valores etiquetados:")
+print(sort(dirty_iris_outliers$Petal.Length[dirty_iris_outliers$Petal.Length_Sigma == TRUE]))
 
+cat("Identificador Hampel")
+print(paste("Número de outliers:", sum(dirty_iris_outliers$Petal.Length_Hampel, na.rm = TRUE)))
+print("Valores etiquetados:")
+print(sort(dirty_iris_outliers$Petal.Length[dirty_iris_outliers$Petal.Length_Hampel == TRUE]))
+
+
+cat("Regla Boxplot")
+print(paste("Número de outliers:", sum(dirty_iris_outliers$Petal.Length_Boxplot, na.rm = TRUE)))
+print("Valores etiquetados:")
+print(sort(dirty_iris_outliers$Petal.Length[dirty_iris_outliers$Petal.Length_Boxplot == TRUE]))
+
+# 4. Percentiles
+cat("Percentiles (5% - 95%)")
+print(paste("Número de outliers:", sum(dirty_iris_outliers$Petal.Length_Percentil, na.rm = TRUE)))
+print("Valores etiquetados:")
+print(sort(dirty_iris_outliers$Petal.Length[dirty_iris_outliers$Petal.Length_Percentil == TRUE]))
+
+#Se puede observar la robusted de las reglas basadas en medianas como el hampel
+#y el boxplot, la incapacidad de detectar al 14 con la regla 3 sigma al depender
+#de como de grandes sean otros outliers y que el método de los percentiles no 
+#siempre es acertado ya que puede marcar como outliers a valores que no lo son 
+#al no tener en cuenta la distribución
 ```
 
 ## Ejercicio 8: Representación gráfica
