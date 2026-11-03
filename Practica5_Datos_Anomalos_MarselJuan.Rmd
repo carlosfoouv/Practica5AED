@@ -261,7 +261,7 @@ reglahampel <- function(x) {
   mad <- 1.4826 * median(abs(x - mediana), na.rm = TRUE)
   
   # Es outlier si la distancia a la mediana es mayor a 3 MADM
-  abs(x - mediana) > 3 * madm_val
+  abs(x - mediana) > 3 * mad
 }
 
 # Regla boxplot
@@ -297,6 +297,22 @@ Nota: podría extenderse la aplicación a todas las variables numéricas usando 
 
 ```{r Solucion ejercicio 6, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
 
+library(dplyr)
+
+# Aplicar las 4 reglas de detección a Petal.Length
+#Usamos dirty_iris para no perder información
+#Podemos usarlas porque las funciones son robustas a NAs
+
+outliers_petal_length <- dirty_iris %>%
+  mutate(across(
+    Petal.Length, 
+    list(
+      Sigma     = ~ reglasigma(.x),
+      Hampel    = ~ reglahampel(.x),
+      Boxplot   = ~ reglaboxplot(.x),
+      Percentil = ~ reglapercentil(.x)
+    )
+  ))
 
 
 ```
