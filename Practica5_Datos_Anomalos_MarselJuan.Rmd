@@ -138,7 +138,7 @@ library(dplyr)
 
 #Usamos operador pipe para que sea más sencillo
 
-dirty_iris_limpio <- dirty_iris %>%
+dirty_iris <- dirty_iris %>%
   mutate(
     Sepal.Length = ifelse(!is.finite(Sepal.Length) | Sepal.Length <= 0, NA, Sepal.Length),
     Sepal.Width  = ifelse(!is.finite(Sepal.Width)  | Sepal.Width  <= 0, NA, Sepal.Width),
@@ -147,7 +147,7 @@ dirty_iris_limpio <- dirty_iris %>%
   )
 
 # Comprobamos el resultado
-summary(dirty_iris_limpio)
+summary(dirty_iris)
 
 ```
 
@@ -158,9 +158,9 @@ summary(dirty_iris_limpio)
   * Emplea después la función `na.omit` para quedarnos solo con las filas con datos completos en un nuevo data frame `clean_iris`.
 
 ```{r Solucion ejercicio 3, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
-num_completas <- sum(complete.cases(dirty_iris_limpio))
+num_completas <- sum(complete.cases(dirty_iris))
 porcentaje_completas <- (num_completas / nrow(dirty_iris)) * 100
-clean_iris <- na.omit(dirty_iris_limpio)
+clean_iris <- na.omit(dirty_iris)
 ```
 
 # Detección de outliers univariante
