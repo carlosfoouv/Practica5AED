@@ -133,7 +133,21 @@ Reemplaza, en todas las columnas numéricas del data frame `dirty_iris`, los val
 Nota: Puedes reemplazar los valores para cada variable del dataframe usando `mutate` con la función `ifelse`.
 
 ```{r Solucion ejercicio 2, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
+# DEBEMOS ELIMINAR TAMBIEN LOS VALROES IGUALES A CERO YA QUE SE TRATA DE LONGITUDES DE PARTES DE UNA FLOR. NO PUEDEN SER O
+library(dplyr)
 
+#Usamos operador pipe para que sea más sencillo
+
+dirty_iris_limpio <- dirty_iris %>%
+  mutate(
+    Sepal.Length = ifelse(!is.finite(Sepal.Length) | Sepal.Length <= 0, NA, Sepal.Length),
+    Sepal.Width  = ifelse(!is.finite(Sepal.Width)  | Sepal.Width  <= 0, NA, Sepal.Width),
+    Petal.Length = ifelse(!is.finite(Petal.Length) | Petal.Length <= 0, NA, Petal.Length),
+    Petal.Width  = ifelse(!is.finite(Petal.Width)  | Petal.Width  <= 0, NA, Petal.Width)
+  )
+
+# Comprobamos el resultado
+summary(dirty_iris_limpio)
 
 ```
 
