@@ -2,15 +2,15 @@
 title: "Práctica 5. Datos Anómalos"
 subtitle: "Análisis Exploratorio de Datos, Máster en Ciencia de Datos - UV"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: no
   html_document:
     echo: yes
     number_sections: no
     theme: lumen
     toc: yes
-  pdf_document:
-    toc: yes
-    toc_depth: 3
-    number_sections: no
 ---
 
 ```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
@@ -133,7 +133,8 @@ Reemplaza, en todas las columnas numéricas del data frame `dirty_iris`, los val
 Nota: Puedes reemplazar los valores para cada variable del dataframe usando `mutate` con la función `ifelse`.
 
 ```{r Solucion ejercicio 2, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
-# DEBEMOS ELIMINAR TAMBIEN LOS VALROES IGUALES A CERO YA QUE SE TRATA DE LONGITUDES DE PARTES DE UNA FLOR. NO PUEDEN SER O
+# DEBEMOS ELIMINAR TAMBIEN LOS VALROES IGUALES A CERO YA QUE SE TRATA DE 
+# LONGITUDES DE PARTES DE UNA FLOR. NO PUEDEN SER O
 library(dplyr)
 
 #Usamos operador pipe para que sea más sencillo
@@ -188,9 +189,11 @@ madm <- function(x, na.rm = FALSE) {
 }
 
 # Estadísticos para clean_iris$Petal.Length
-#Usando pipes y summarise y across
-#usamos across(where(is.numeric) para calcular los estadísticos pero solo de las variables numericas
-# ~ sirve para decalrar una función anónima y el .x para referirse a la columna actual
+# Usando pipes y summarise y across
+# usamos across(where(is.numeric) para calcular los estadísticos pero solo de las
+# variables numericas.
+# ~ sirve para decalrar una función anónima y el .x para referirse a la columna 
+# actual
 
 stats_petal_clean <- clean_iris %>%
   summarise(across(where(is.numeric), list(
@@ -228,7 +231,8 @@ print(paste("Mediana:", stats_petal_dirty$Petal.Length_Mediana))
 print(paste("MADM:", stats_petal_dirty$Petal.Length_MADM))
 print(paste("IQR:", stats_petal_dirty$Petal.Length_IQR))
 
-#Sobre todo cambian la media y la variancia que son estadísticos poco robusto a valores atípicos
+#Sobre todo cambian la media y la variancia que son estadísticos poco robusto 
+# a valores atípicos
 ```
 
 
@@ -482,7 +486,8 @@ dirty_iris <- dirty_iris %>%
 ```{r Solucion ejercicio 10b, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
 library(ggplot2)
 
-# Preparamos los datos filtrando los outliers de la regla percentil y definiendo qué datos son imputados
+# Preparamos los datos filtrando los outliers de la regla percentil y definiendo
+# qué datos son imputados
 dirty_iris_plot <- dirty_iris %>%
   #Eliminimos los outlieres poniendolos a FALSE
   filter(Petal.Length1_Percentil == FALSE & Petal.Length2_Percentil == FALSE) %>%
