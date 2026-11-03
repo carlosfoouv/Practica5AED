@@ -78,6 +78,42 @@ Inspecciona visualmente los valores del conjunto de datos (`View`) y ordena de m
 ```{r Solucion ejercicio 1, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
 # Medidas con valores faltantes, longitudes negativas y cero
 
+View(dirty_iris)
+
+summary(dirty_iris)
+
+#Número de NAs por columna
+colSums(is.na(dirty_iris))
+
+#Número de valores infinitos, solo uno en la columna Petal.Width
+sapply(dirty_iris, function(x) sum(is.infinite(x)))
+
+#Número de valores negativos o ceros, imposibles en longitudes, solo dos en 
+#Sepal.Width, uno en Sepal.lenght y uno en Petal.Length
+
+sapply(dirty_iris, function(x) sum(x <= 0, na.rm = TRUE))
+
+# Sepal.Length, usamos head para ver solo el principio
+head(dirty_iris[order(dirty_iris$Sepal.Length), ]) # Menor a mayor
+head(dirty_iris[order(dirty_iris$Sepal.Length, decreasing = TRUE), ])
+
+# Sepal.Width
+head(dirty_iris[order(dirty_iris$Sepal.Width), ],)                      
+head(dirty_iris[order(dirty_iris$Sepal.Width, decreasing = TRUE), ])     
+
+# Petal.Length
+head(dirty_iris[order(dirty_iris$Petal.Length), ])                      
+head(dirty_iris[order(dirty_iris$Petal.Length, decreasing = TRUE), ])    
+
+# Petal.Width
+head(dirty_iris[order(dirty_iris$Petal.Width), ])                       
+head(dirty_iris[order(dirty_iris$Petal.Width, decreasing = TRUE), ])
+
+#En definitiva se observan 10, 17, 19 y 12 NAs en las columnas Sepal.Length, 
+#Sepal.Width, Petal.Length, Petal.Width respectivamente. Se observa también un 
+#ifinito en la columna Petal.width. También valores negativos o ceros, 
+#imposibles en longitudes, solo dos en Sepal.Width, uno en Sepal.lenght y uno 
+#en Petal.Length
 ```
 
 ## Ejercicio 2: Valores especiales
@@ -97,7 +133,6 @@ Reemplaza, en todas las columnas numéricas del data frame `dirty_iris`, los val
 Nota: Puedes reemplazar los valores para cada variable del dataframe usando `mutate` con la función `ifelse`.
 
 ```{r Solucion ejercicio 2, include=TRUE, echo=TRUE, eval=TRUE, results=TRUE}
-# DEBEMOS ELIMINAR TAMBIEN LOS VALROES IGUALES A CERO YA QUE SE TRATA DE LONGITUDES DE PARTES DE UNA FLOR. NO PUEDEN SER O
 
 
 ```
