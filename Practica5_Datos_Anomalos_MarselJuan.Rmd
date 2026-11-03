@@ -182,6 +182,53 @@ Hazlo para el data frame con observaciones completas `clean_iris` (que no tiene 
 
 ```{r , include = TRUE}
 
+#usamos na.rm = TRUE cada vez que calculamos media para que sea robusta ante NAs
+madm <- function(x, na.rm = FALSE) {
+  1.4826 * median(abs(x - median(x, na.rm = TRUE)), na.rm = TRUE)
+}
+
+# Estadísticos para clean_iris$Petal.Length
+#Usando pipes y summarise y across
+#usamos across(where(is.numeric) para calcular los estadísticos pero solo de las variables numericas
+# ~ sirve para decalrar una función anónima y el .x para referirse a la columna actual
+
+stats_petal_clean <- clean_iris %>%
+  summarise(across(where(is.numeric), list(
+    Media = ~mean(.x),
+    SD = ~sd(.x),
+    Mediana = ~median(.x),
+    MADM = ~madm(.x),
+    IQR = ~IQR(.x)
+  )))
+
+
+
+# 3. Estadísticos básicos para dirty_iris
+ 
+stats_petal_dirty <- dirty_iris %>%
+  summarise(across(where(is.numeric), list(
+    Media = ~mean(.x, na.rm = TRUE),
+    SD = ~sd(.x, na.rm = TRUE),
+    Mediana = ~median(.x, na.rm = TRUE),
+    MADM = ~madm(.x, na.rm = TRUE),
+    IQR = ~IQR(.x, na.rm = TRUE)
+  )))
+ 
+print("Clean irirs:")
+print(paste("Media:", stats_petal_clean$Petal.Length_Media))
+print(paste("SD:", stats_petal_clean$Petal.Length_SD))
+print(paste("Mediana:", stats_petal_clean$Petal.Length_Mediana))
+print(paste("MADM:", stats_petal_clean$Petal.Length_MADM))
+print(paste("IQR:", stats_petal_clean$Petal.Length_IQR))
+
+print("Dirty irirs:")
+print(paste("Media:", stats_petal_dirty$Petal.Length_Media))
+print(paste("SD:", stats_petal_dirty$Petal.Length_SD))
+print(paste("Mediana:", stats_petal_dirty$Petal.Length_Mediana))
+print(paste("MADM:", stats_petal_dirty$Petal.Length_MADM))
+print(paste("IQR:", stats_petal_dirty$Petal.Length_IQR))
+
+#Sobre todo cambian la media y la variancia que son estadísticos poco robusto a valores atípicos
 ```
 
 
